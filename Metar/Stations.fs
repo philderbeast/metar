@@ -9,10 +9,11 @@ open Microsoft.FSharp.Control.WebExtensions
 module internal _Stations =
     let download(url : Uri) =
         async {
-        let client = new WebClient()
-        client.Encoding <- Encoding.GetEncoding("utf-8")
-        let! html = client.AsyncDownloadString(url)
-        return html }
+            let client = new WebClient()
+            client.Encoding <- Encoding.GetEncoding("utf-8")
+            let! html = client.AsyncDownloadString(url)
+            return html 
+        }
 
     [<Literal>]
     let stationsUri = "http://weather.noaa.gov/data/nsd_cccc.txt"
@@ -21,12 +22,12 @@ module internal _Stations =
     let saveStations (contents : string) =
         let streamWriter = File.CreateText cacheFileName
         streamWriter.Write contents
-        streamWriter.Close
+        streamWriter.Close()
 
-    let cacheFile =
+    let cacheFile() =
         let cached = File.Exists cacheFileName
         match cached with
-            | true -> ignore
+            | true -> ()
             | false -> 
                 let contents = download (new Uri(stationsUri))
                 contents |> Async.RunSynchronously |> saveStations
