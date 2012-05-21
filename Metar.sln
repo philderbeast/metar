@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Metar", "metar\Metar.fsproj", "{D26CA46A-DC9A-49F4-ADFC-C57AE8F8047F}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RunMetar", "RunMetar\RunMetar.fsproj", "{C02A04BA-97A5-425F-8365-4BA2F0D6E587}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C02A04BA-97A5-425F-8365-4BA2F0D6E587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C02A04BA-97A5-425F-8365-4BA2F0D6E587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C02A04BA-97A5-425F-8365-4BA2F0D6E587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C02A04BA-97A5-425F-8365-4BA2F0D6E587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D26CA46A-DC9A-49F4-ADFC-C57AE8F8047F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D26CA46A-DC9A-49F4-ADFC-C57AE8F8047F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D26CA46A-DC9A-49F4-ADFC-C57AE8F8047F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D26CA46A-DC9A-49F4-ADFC-C57AE8F8047F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
