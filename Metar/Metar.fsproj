@@ -59,6 +59,8 @@
     <Compile Include="Stations.fs" />
     <None Include="Stations.fsx" />
     <None Include="packages.config" />
+    <None Include="Download.fsx" />
+    <Compile Include="Download.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
