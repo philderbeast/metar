@@ -10,6 +10,8 @@
     <AssemblyName>RunMetar</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Name>RunMetar</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,8 +43,15 @@
   <ItemGroup>
     <Compile Include="Program.fs" />
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FParsec, Version=0.9.2.0, Culture=neutral, PublicKeyToken=e5c8267bb3bd1265">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FParsecCS, Version=0.9.2.0, Culture=neutral, PublicKeyToken=cba5b27b2682ab6b">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -58,6 +67,7 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
