@@ -59,21 +59,25 @@ let prop_QuotedStr (s : string) =
     filter ==> property
 Check.Quick prop_QuotedStr
 
-let toStr p = p |>> (fun x -> match x with | ICAO(s) -> s) 
+let toStr p = p |>> (fun x -> match x with | ICAO(s) | IATA(s) -> s) 
 
 out (toStr icao) (enQuote "SGES");;
+out (toStr iata) (enQuote "SGE");;
 
 // Generate 4 letter strings of uppercaps that are double quoted.
-let genUpperCapOfLength length =
+let genUpper length =
     (Gen.listOfLength(length) (Gen.elements ['A'..'Z']))
     |> Gen.map (fun (chars:char list) -> enQuote (new String(List.toArray chars)))
 
-let genICAO = genUpperCapOfLength 4
+genUpper 4 |> Helpers.sample1;;
 
-genICAO |> Helpers.sample1;;
-
-let prop_Icao (s:string) =
-    let arb = (Arb.fromGen genICAO)
-    Prop.forAll arb (fun x -> out (toStr icao) x = deQuote x) 
+let arbUpper count = genUpper count |> Arb.fromGen
+let prop_Icao (s:string) = Prop.forAll (arbUpper 4) (fun x -> out (toStr icao) x = deQuote x) 
+let prop_Iata (s:string) = Prop.forAll (arbUpper 3) (fun x -> out (toStr iata) x = deQuote x) 
 
 Check.Quick prop_Icao
+Check.Quick prop_Iata
+
+Arb.Default.Float().Generator |> Gen.suchThat (fun x -> -90 <= x && x <= 90)
+
+let genLatitude = Gen.choose(-90, 90) |>

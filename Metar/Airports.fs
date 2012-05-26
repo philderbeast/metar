@@ -4,26 +4,22 @@ open System
 open FParsec
 open Parse
 
-type ICAO = ICAO of string
-type IATA = IATA of string
+type Code =
+    | ICAO of string
+    | IATA of string
 type Country = Country of string * string * string
 type LatLong = LatLong of float * float
-type Airport = Airport of Country * IATA * ICAO * LatLong
+type Airport = Airport of Country * Code * Code * LatLong
 
-let stringFromList l =
-    new string(l |> List.toArray)
-
-let makeICAO s = ICAO(s)
-let makeIATA s = IATA(s)
-
+let stringFromList l = new string(l |> List.toArray) 
 let data = AirportCodes.Codes.airports
 let upperCaps : Parser<_> = regex "[A-Z]"
 let quote = str "\""
 let quoted p = between quote quote p
 let quotedListOfChar = quoted (many1 (noneOf "\""))
-let quotedStr = quotedListOfChar |>> (fun l -> new string(l |> List.toArray))
-let icao = quoted (regex "[A-Z]{4,4}") |>> makeICAO <?> "ICAO 4 letter code in uppercaps"
-let iata = quoted (regex "[A-Z]{3,3}") |>> makeIATA <?> "IATA 3 letter code in uppercaps"
+let quotedStr = quotedListOfChar |>> stringFromList
+let icao = quoted (regex "[A-Z]{4,4}") |>> (fun s -> ICAO(s)) <?> "ICAO 4 letter code in uppercaps"
+let iata = quoted (regex "[A-Z]{3,3}") |>> (fun s -> IATA(s)) <?> "IATA 3 letter code in uppercaps"
 let codes = pipe3 iata (str ",") icao (fun iata _ icao -> (iata, icao))
 let latlong = pipe3 pfloat (str ",") pfloat (fun lat _ long -> LatLong(lat, long))
 let listOfStrings = (sepBy quotedStr (str ","))
