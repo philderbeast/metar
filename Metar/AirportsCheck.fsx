@@ -3,7 +3,7 @@
 #r @"bin\Debug\AirportCodes.dll"
 #r @"C:\dev\metar\metar\packages\FsCheck.0.7.1\lib\net35\FsCheck.dll"
 #load "Parse.fs"
-#load "Airports.fs"
+#load "OpenFlights.fs"
 
 open System
 open FParsec
@@ -13,8 +13,10 @@ open FsCheck
 open Prop
 open FsCheck.Checks
 open FsCheck.Fluent
-open _Airports
 open System.Text.RegularExpressions
+open MeridianArc.Airports
+open MeridianArc.Airports.OpenFlights
+open MeridianArc.Airports.OpenFlights.PrimitiveParsers
 
 let out p str =
     match run p str with
@@ -136,10 +138,10 @@ let prop_LatLongAsTuple =
                 | _ -> false
     let property coords =
         let lhs = outLatLongAsTuple (latlong) (encodeTupleAsString coords)
-        let rhs = ((printfn "%A" coords); Some(coords))
+        let rhs = Some(coords)
         let compare (lhs:(float * float) option) (rhs:(float * float) option) =
             match lhs, rhs with
-                | Some(x1, y1), Some(x2, y2) -> equiv x1 x2 && equiv y1  y2
+                | Some(x1, y1), Some(x2, y2) -> equiv x1 x2 && equiv y1 y2
                 | _ -> true
         compare lhs rhs
     Prop.forAll (Arb.fromGen genLatLongAsTuple) property
@@ -148,4 +150,4 @@ outLatLongAsString latlong (genLatLongAsString |> Helpers.sample1);;
 Check.Quick prop_LatLongAsString;;
 
 outLatLongAsTuple latlong (encodeTupleAsString (genLatLongAsTuple |> Helpers.sample1));;
-Check.Verbose prop_LatLongAsTuple;;
+Check.Quick prop_LatLongAsTuple;;

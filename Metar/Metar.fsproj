@@ -44,7 +44,7 @@
     <None Include="Download.fsx" />
     <Compile Include="Download.fs" />
     <None Include="packages.config" />
-    <Compile Include="Airports.fs" />
+    <Compile Include="OpenFlights.fs" />
     <Compile Include="metar.fs" />
     <None Include="Parse.fsx" />
     <None Include="AirportsCheck.fsx" />

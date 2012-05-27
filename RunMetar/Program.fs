@@ -1,10 +1,9 @@
 ﻿open System
-open MeridianArc.Metar
 open Parse
 open FParsec
 open FParsec.Primitives
 open FParsec.CharParsers
-open _Airports
+open MeridianArc.Airports
 
 //Console.WriteLine("Date line, then metar line ...")
 //let line1 = datePart(nzch)
@@ -22,4 +21,6 @@ open _Airports
 //test dateTime @"2012/05/21 05:00
 //"
 
+let line = "1,\"Goroka\",\"Goroka\",\"Papua New Guinea\",\"GKA\",\"AYGA\",-6.081689,145.391881,5282,10,\"U\""
+let parsed = run OpenFlights.line line
 Console.ReadKey() |> ignore
