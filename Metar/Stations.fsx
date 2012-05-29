@@ -3,4 +3,4 @@
 open System
 
 Environment.CurrentDirectory <- @"C:\temp"
-MeridianArc.Metar._Stations.cacheFile()
+BlockScope.Metar._Stations.cacheFile()

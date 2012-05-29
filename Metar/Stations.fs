@@ -1,4 +1,4 @@
-﻿namespace MeridianArc.Metar
+﻿namespace BlockScope.Metar
 
 open System
 open System.IO

@@ -14,9 +14,9 @@ open Prop
 open FsCheck.Checks
 open FsCheck.Fluent
 open System.Text.RegularExpressions
-open MeridianArc.Airports
-open MeridianArc.Airports.OpenFlights
-open MeridianArc.Airports.OpenFlights.PrimitiveParsers
+open BlockScope.Airports
+open BlockScope.Airports.OpenFlights
+open BlockScope.Airports.OpenFlights.PrimitiveParsers
 
 let out p str =
     match run p str with

@@ -2,4 +2,4 @@
 
 open System
 
-MeridianArc.Metar.Download.MetarFor "NZAA"
+BlockScope.Metar.Download.MetarFor "NZAA"

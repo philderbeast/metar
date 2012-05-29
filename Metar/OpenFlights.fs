@@ -1,4 +1,4 @@
-﻿module MeridianArc.Airports.OpenFlights
+﻿module BlockScope.Airports.OpenFlights
 
 open System
 open FParsec
