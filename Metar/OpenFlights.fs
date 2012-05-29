@@ -8,15 +8,15 @@ type Code =
     | ICAO of string
     | IATA of string
 
-type Country = Country of string * string * string
+type Location = { Name: string; City: string; Country: string }
 
-type LatLong = LatLong of float * float
+type LatLong = { Lat: float; Long: float }
 
 type Airport = {
-    country : Country;
-    icao : Code;
-    iata : Code;
-    coords : LatLong}
+    Location: Location;
+    Icao: Code;
+    Iata: Code;
+    Coords: LatLong}
 
 module PrimitiveParsers =
     let stringFromList l = new string(l |> List.toArray) 
@@ -29,12 +29,12 @@ module PrimitiveParsers =
     let icao = quoted (regex "[A-Z]{4,4}") |>> (fun s -> ICAO(s)) <?> "ICAO 4 letter code in uppercaps"
     let iata = quoted (regex "[A-Z]{3,3}") |>> (fun s -> IATA(s)) <?> "IATA 3 letter code in uppercaps"
     let codes = pipe3 iata (str ",") icao (fun iata _ icao -> (iata, icao))
-    let latlong = pipe3 pfloat (str ",") pfloat (fun lat _ long -> LatLong(lat, long))
+    let latlong = pipe3 pfloat (str ",") pfloat (fun lat _ long -> { Lat = lat; Long = long})
     let listOfStrings = (sepBy quotedStr (str ","))
     let thenCodes = (str ",") >>. codes
     let countries =
         let each = quotedStr .>> (str ",")
-        pipe3 each each quotedStr (fun a b c -> Country(a, b, c))
+        pipe3 each each quotedStr (fun a b c -> {Name = a; City = b; Country = c})
 
 open PrimitiveParsers
 
@@ -43,7 +43,7 @@ let line =
     let thenCodes = (str ",") >>. codes
     let thenLatLong = (str ",") >>. latlong .>> skipRestOfLine false 
     pipe4 index countries thenCodes thenLatLong
-        (fun _ c (c3, c4) l -> { country = c; iata = c3; icao = c4; coords = l})
+        (fun _ c (c3, c4) l -> { Location = c; Iata = c3; Icao = c4; Coords = l})
 let lines =
     sepBy line newline
 
