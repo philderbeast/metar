@@ -3,7 +3,7 @@ open Parse
 open FParsec
 open FParsec.Primitives
 open FParsec.CharParsers
-open BlockScope.Airports
+open BlockScope
 
 //Console.WriteLine("Date line, then metar line ...")
 //let line1 = datePart(nzch)

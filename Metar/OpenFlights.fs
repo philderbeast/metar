@@ -1,31 +1,12 @@
-﻿module BlockScope.Airports.OpenFlights
-
-open System
-open FParsec
-open Parse
-
-type Code =
-    | ICAO of string
-    | IATA of string
-
-type Location = { Name: string; City: string; Country: string }
-
-type LatLong = { Lat: float; Long: float }
-
-type Airport = {
-    Location: Location;
-    Icao: Code;
-    Iata: Code;
-    Coords: LatLong}
+﻿namespace BlockScope
 
 module PrimitiveParsers =
-    let stringFromList l = new string(l |> List.toArray) 
+    open Parser
+    open FParsec
+    open BlockScope.Metar
+
     let data = AirportCodes.Codes.airports
     let upperCaps : Parser<_> = regex "[A-Z]"
-    let quote = str "\""
-    let quoted p = between quote quote p
-    let quotedListOfChar = quoted (many1 (noneOf "\""))
-    let quotedStr = quotedListOfChar |>> stringFromList
     let icao = quoted (regex "[A-Z]{4,4}") |>> (fun s -> ICAO(s)) <?> "ICAO 4 letter code in uppercaps"
     let iata = quoted (regex "[A-Z]{3,3}") |>> (fun s -> IATA(s)) <?> "IATA 3 letter code in uppercaps"
     let codes = pipe3 iata (str ",") icao (fun iata _ icao -> (iata, icao))
@@ -36,16 +17,20 @@ module PrimitiveParsers =
         let each = quotedStr .>> (str ",")
         pipe3 each each quotedStr (fun a b c -> {Name = a; City = b; Country = c})
 
-open PrimitiveParsers
+module OpenFlights =
+    open PrimitiveParsers
+    open Parser
+    open FParsec
+    open BlockScope.Metar
 
-let line =
-    let index = pint32 .>> (str ",")
-    let thenCodes = (str ",") >>. codes
-    let thenLatLong = (str ",") >>. latlong .>> skipRestOfLine false 
-    pipe4 index countries thenCodes thenLatLong
-        (fun _ c (c3, c4) l -> { Location = c; Iata = c3; Icao = c4; Coords = l})
-let lines =
-    sepBy line newline
+    let line =
+        let index = pint32 .>> (str ",")
+        let thenCodes = (str ",") >>. codes
+        let thenLatLong = (str ",") >>. latlong .>> skipRestOfLine false 
+        pipe4 index countries thenCodes thenLatLong
+            (fun _ c (c3, c4) l -> { Location = c; Iata = c3; Icao = c4; Coords = l})
+    let lines =
+        sepBy line newline
 
 (*
 1,"Goroka","Goroka","Papua New Guinea","GKA","AYGA",-6.081689,145.391881,5282,10,"U"
