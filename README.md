@@ -1,5 +1,7 @@
 # Metar #
 
+Parsing METAR using FParsec - in progress and not complete
+
 ## Errors ##
 
 This project was developed a beta of Visual Studio 11, dotNet 4.5 and F# 3.0. When using F# interactive this error occurs ...
